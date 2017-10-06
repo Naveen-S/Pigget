@@ -349,14 +349,18 @@ var controller = (function (budgetCtrl, UICtrl) {
     var ctrlDeleteItem = function (event) {
         var itemID, type, id;
         // Identity the item
-        itemID = event.target.parentNode.parentNode.parentNode.id;
+        // Check since event.target is different for Chrome and mozilla.
+        if(window.navigator.userAgent.indexOf('Chrome') > 0) {
+            itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        }else{
+            itemID = event.target.parentNode.parentNode.parentNode.id;
+        }
         if (itemID) {
             type = itemID.split('-')[0];
             id = itemID.split('-')[1];
             // Delete from the DS
             budgetCtrl.deleteItem(type, id);
         }
-
         //Delete the item from UI
         UICtrl.deleteListItem(itemID);
 
